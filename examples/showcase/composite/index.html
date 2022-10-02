@@ -1,23 +1,72 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Composite</title>
-    <meta name="description" content="Composite — A-Frame">
-    <script src="../../../dist/aframe-master.js"></script>
-  </head>
-  <body>
-    <a-scene renderer="colorManagement: true;">
-      <a-assets>
-        <img id="lake" src="lake.jpg">
-        <img id="pdx" src="portland.png">
-        <a-asset-item id="sculpture" src="sculpture.glb"></a-asset-item>
-      </a-assets>
+<head>
+  <meta charset="utf-8">
+  <title>Maurice</title>
+  <meta name="description" content="Composite — A-Frame">
+  <script src="../../../dist/aframe-master.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const ticketNumber = params.get('tn');
+    const token = params.get('tkn');
 
-      <a-sky src="#lake"></a-sky>
-      <a-gltf-model src="#sculpture" position="0 0 -6"></a-gltf-model>
-      <a-image src="#pdx" width="10" height="5" position="-2 1.2 -3"
-               scale="0.2 0.2 0.2"></a-image>
-    </a-scene>
-  </body>
+    console.log(ticketNumber);
+    console.log(token);
+
+    checkPermissions(ticketNumber, token);
+
+    function checkPermissions (tn, tkn) {
+    let result = '';
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", `https://webcupfinalsmauritiusapi.azurewebsites.net/api/BookingTicket?ticketNumber=${tn}`, true);
+    xhr.setRequestHeader('Authorization', `Bearer ${tkn}`);
+    xhr.onload = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.response);
+
+          if (!data.data[0]) {
+            console.log('redirected');
+          } else {
+            console.log('you\re good to go');
+          }
+        } else {
+          console.log('redirected');
+        }
+      }
+    };
+
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.send();
+
+    // if (result == 'granted') {
+
+    // }
+  }
+  </script>
+</head>
+<body>
+  <a-scene renderer="colorManagement: true;" clickhandler>
+    <a-assets>
+      <img id="lake" src="nasa.jpg">
+      <img id="pdx" src="portland.png">
+      <a-asset-item id="iphone" src="space_capsule.glb"></a-asset-item>
+    </a-assets>
+
+    <a-sky src="#lake"></a-sky>
+    <a-gltf-model src="#iphone" position="0 -2 -5"></a-gltf-model>
+    <a-image src="#pdx" width="10" height="5" position="-2 1.2 0" scale="0.2 0.2 0.2" id="oregonImage"></a-image>
+    <a-gltf-model src="#iphone" position="10 -2 -5"></a-gltf-model>
+    <a-gltf-model src="#iphone" position="20 -2 -5"></a-gltf-model>
+    <a-gltf-model src="#iphone" position="30 -2 -5"></a-gltf-model>
+
+    <!-- right lane -->
+    <a-gltf-model src="#iphone" rotation="0 -180 0" position="30 -2 15"></a-gltf-model>
+    <a-gltf-model src="#iphone" rotation="0 -180 0" position="20 -2 15"></a-gltf-model>
+    <a-gltf-model src="#iphone" rotation="0 -180 0" position="10 -2 15"></a-gltf-model>
+    <a-gltf-model src="#iphone" rotation="0 -180 0" position="0 -2 15"></a-gltf-model>
+
+  </a-scene>
+</body>
+
 </html>

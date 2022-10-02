@@ -18,7 +18,8 @@ module.exports = {
     hot: false,
     liveReload: true,
     static: {
-      directory: 'examples'
+      directory: path.join(__dirname, './'),  
+      watch: true
     }
   },
   plugins: [

@@ -15,9 +15,9 @@ AFRAME.registerComponent('info-panel', {
         description: 'Based on the 1952 novel The Borrowers by Mary Norton, an English author of children\'s books, about a family of tiny people who live secretly in the walls and floors of a typical household, borrowing items from humans to survive.'
       },
       kazetachinuButton: {
-        title: 'The Wind Rises (2013)',
+        title: 'Bienvenue à Maurice',
         imgEl: document.querySelector('#kazetachinuMovieImage'),
-        description: 'The Wind Rises is a fictionalised biographical film of Jiro Horikoshi (1903, 1982), designer of the Mitsubishi A5M fighter aircraft and its successor, the Mitsubishi A6M Zero, used by the Empire of Japan during World War II. The film is adapted from Miyazaki\'s manga of the same name, which was in turn loosely based on both the 1937 novel The Wind Has Risen by Tatsuo Hori and the life of Jiro Horikoshi.'
+        description: 'Dans 15 secondes, vous embarquerez pour un voyage ou vous decouvrirez des souvenirs de vos ancêtres et ce qui a façonne la vie que nous vivons aujourd\'hui. Bon voyage. Veuillez activer les fenêtres contextuelles.'
       },
       ponyoButton: {
         title: 'Ponyo (2003)',
@@ -40,27 +40,40 @@ AFRAME.registerComponent('info-panel', {
   },
 
   onMenuButtonClick: function (evt) {
-    var movieInfo = this.movieInfo[evt.currentTarget.id];
+    console.log(evt.currentTarget.id);
 
-    this.backgroundEl.object3D.scale.set(1, 1, 1);
+    if (evt.currentTarget.id == 'kazetachinuButton') {
+      var movieInfo = this.movieInfo[evt.currentTarget.id];
 
-    this.el.object3D.scale.set(1, 1, 1);
-    if (AFRAME.utils.device.isMobile()) { this.el.object3D.scale.set(1.4, 1.4, 1.4); }
-    this.el.object3D.visible = true;
-    this.fadeBackgroundEl.object3D.visible = true;
+      this.backgroundEl.object3D.scale.set(1, 1, 1);
 
-    if (this.movieImageEl) { this.movieImageEl.object3D.visible = false; }
-    this.movieImageEl = movieInfo.imgEl;
-    this.movieImageEl.object3D.visible = true;
+      this.el.object3D.scale.set(1, 1, 1);
+      if (AFRAME.utils.device.isMobile()) { this.el.object3D.scale.set(1.4, 1.4, 1.4); }
+      this.el.object3D.visible = true;
+      this.fadeBackgroundEl.object3D.visible = true;
 
-    this.movieTitleEl.setAttribute('text', 'value', movieInfo.title);
-    this.movieDescriptionEl.setAttribute('text', 'value', movieInfo.description);
+      if (this.movieImageEl) { this.movieImageEl.object3D.visible = false; }
+      this.movieImageEl = movieInfo.imgEl;
+      this.movieImageEl.object3D.visible = true;
+
+      this.movieTitleEl.setAttribute('text', 'value', movieInfo.title);
+      this.movieDescriptionEl.setAttribute('text', 'value', movieInfo.description);
+      setTimeout(() => {
+        window.open("http://192.168.10.12:9000/showcase/composite/index.html?value=abc", '_blank');
+      }, 15000);
+
+    }
+
+    //window.open("http://192.168.10.12:9000/showcase/composite/", '_blank');
+
+
   },
 
   onBackgroundClick: function (evt) {
+    console.log('clcked');
     this.backgroundEl.object3D.scale.set(0.001, 0.001, 0.001);
     this.el.object3D.scale.set(0.001, 0.001, 0.001);
     this.el.object3D.visible = false;
     this.fadeBackgroundEl.object3D.visible = false;
-  }
+  },
 });
